@@ -114,6 +114,7 @@ func HandlePDUSessionSMContextCreate(request models.PostSmContextsRequest) *http
 	smContext.SelectedUPF = selectedUPF
 
 	smPlmnID := createData.Guami.PlmnId
+	logger.PduSessLog.Infof("%v", smPlmnID)
 
 	smDataParams := &Nudm_SubscriberDataManagement.GetSmDataParamOpts{
 		Dnn:         optional.NewString(createData.Dnn),
