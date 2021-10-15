@@ -29,6 +29,7 @@ import (
 	"github.com/free5gc/nas/security"
 	"github.com/free5gc/ngap/ngapConvert"
 	"github.com/free5gc/ngap/ngapType"
+	"github.com/free5gc/openapi"
 	"github.com/free5gc/openapi/Nnrf_NFDiscovery"
 	"github.com/free5gc/openapi/models"
 )
@@ -512,7 +513,7 @@ func HandleRegistrationRequest(ue *context.AmfUe, anType models.AccessType, proc
 		}
 
 		searchOpt := Nnrf_NFDiscovery.SearchNFInstancesParamOpts{
-			Guami: optional.NewInterface(util.MarshToJsonString(guamiFromUeGuti)),
+			Guami: optional.NewInterface(openapi.MarshToJsonString(guamiFromUeGuti)),
 		}
 		err := consumer.SearchAmfCommunicationInstance(ue, amfSelf.NrfUri, models.NfType_AMF, models.NfType_AMF, &searchOpt)
 		if err != nil {
@@ -983,6 +984,9 @@ func HandleMobilityAndPeriodicRegistrationUpdating(ue *context.AmfUe, anType mod
 	// TODO: T3512/Non3GPP de-registration timer reassignment if need (based on operator policy)
 
 	if ue.RanUe[anType].UeContextRequest {
+		// update Kgnb/Kn3iwf
+		ue.UpdateSecurityContext(anType)
+
 		if anType == models.AccessType__3_GPP_ACCESS {
 			gmm_message.SendRegistrationAccept(ue, anType, pduSessionStatus, reactivationResult,
 				errPduSessionId, errCause, &ctxList)
@@ -1233,9 +1237,9 @@ func handleRequestedNssai(ue *context.AmfUe, anType models.AccessType) error {
 
 					if !reflect.DeepEqual(*guami.PlmnId, targetAmfPlmnId) {
 						searchTargetAmfQueryParam.TargetPlmnList =
-							optional.NewInterface(util.MarshToJsonString([]models.PlmnId{targetAmfPlmnId}))
+							optional.NewInterface(openapi.MarshToJsonString([]models.PlmnId{targetAmfPlmnId}))
 						searchTargetAmfQueryParam.RequesterPlmnList =
-							optional.NewInterface(util.MarshToJsonString([]models.PlmnId{*guami.PlmnId}))
+							optional.NewInterface(openapi.MarshToJsonString([]models.PlmnId{*guami.PlmnId}))
 					}
 
 					searchTargetAmfQueryParam.AmfRegionId = optional.NewString(targetAmfSetToken[2])
@@ -1965,7 +1969,7 @@ func HandleAuthenticationResponse(ue *context.AmfUe, accessType models.AccessTyp
 			ue.DerivateKamf()
 			// TODO: select enc/int algorithm based on ue security capability & amf's policy,
 			// then generate KnasEnc, KnasInt
-			return GmmFSM.SendEvent(ue.State[accessType], SecurityModeSuccessEvent, fsm.ArgsType{
+			return GmmFSM.SendEvent(ue.State[accessType], AuthSuccessEvent, fsm.ArgsType{
 				ArgAmfUe:      ue,
 				ArgAccessType: accessType,
 				ArgEAPSuccess: true,

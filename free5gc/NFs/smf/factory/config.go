@@ -38,6 +38,7 @@ type Configuration struct {
 	Sbi                  *Sbi                 `yaml:"sbi,omitempty"`
 	PFCP                 *PFCP                `yaml:"pfcp,omitempty"`
 	NrfUri               string               `yaml:"nrfUri,omitempty"`
+	QofUri               string               `yaml:"qofUri,omitempty"`
 	UserPlaneInformation UserPlaneInformation `yaml:"userplane_information"`
 	ServiceNameList      []string             `yaml:"serviceNameList,omitempty"`
 	SNssaiInfo           []SnssaiInfoItem     `yaml:"snssaiInfos,omitempty"`
