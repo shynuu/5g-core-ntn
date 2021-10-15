@@ -1,0 +1,41 @@
+info:
+  version: 1.0.0
+  description: QOF initial local configuration
+
+configuration:
+  smfName: QOF # the name of this SMF
+  sbi: # Service-based interface information
+    scheme: http # the protocol for sbi (http or https)
+    registerIPv4: 127.0.0.1 # IP used to register to NRF
+    bindingIPv4: 127.0.0.1  # IP used to bind the service
+    port: 8090 # Port used to bind the service
+    tls: # the local path of TLS key
+      key: free5gc/support/TLS/qof.key # SMF TLS Certificate
+      pem: free5gc/support/TLS/qof.pem # SMF TLS Private key
+  nrfUri: http://127.0.0.10:8000 # a valid URI of NRF
+
+# the kind of log output
+  # debugLevel: how detailed to output, value: trace, debug, info, warn, error, fatal, panic
+  # ReportCaller: enable the caller report or not, value: true or false
+logger:
+  SMF:
+    debugLevel: info
+    ReportCaller: false
+  NAS:
+    debugLevel: info
+    ReportCaller: false
+  NGAP:
+    debugLevel: info
+    ReportCaller: false
+  Aper:
+    debugLevel: info
+    ReportCaller: false
+  PathUtil:
+    debugLevel: info
+    ReportCaller: false
+  OpenApi:
+    debugLevel: info
+    ReportCaller: false
+  PFCP:
+    debugLevel: info
+    ReportCaller: false

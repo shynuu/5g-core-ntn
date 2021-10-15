@@ -13,7 +13,7 @@ import (
 )
 
 /*
-SessionSessionQOF Read the profile of a given NF Instance
+SendSessionQOF Read the profile of a given NF Instance
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param nfInstanceID Unique ID of the NF Instance
 @return models.NfProfile
