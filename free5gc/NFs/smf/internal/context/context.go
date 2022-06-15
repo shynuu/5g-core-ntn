@@ -131,6 +131,12 @@ func InitSmfContext(config *factory.Config) {
 		smfContext.NrfUri = fmt.Sprintf("%s://%s:%d", smfContext.URIScheme, "127.0.0.1", 29510)
 	}
 
+	if configuration.QofUri != "" {
+		smfContext.QofUri = configuration.QofUri
+	} else {
+		logger.CtxLog.Warn("QOF Uri is empty!")
+	}
+
 	if pfcp := configuration.PFCP; pfcp != nil {
 		if pfcp.Port == 0 {
 			pfcp.Port = pfcpUdp.PFCP_PORT
